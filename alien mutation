@@ -1,0 +1,98 @@
+// Returns a random DNA base
+const returnRandBase = () => {
+  const dnaBases = ['A', 'T', 'C', 'G']
+  return dnaBases[Math.floor(Math.random() * 4)] 
+}
+
+// Returns a random single stand of DNA containing 15 bases
+const mockUpStrand = () => {
+  const newStrand = []
+  for (let i = 0; i < 15; i++) {
+    newStrand.push(returnRandBase())
+  }
+  return newStrand
+}
+
+// Step 3:
+
+const pAequorFactory = (specimenNum, dna) => {
+  return {
+    specimenNum : specimenNum,
+    dna : dna,
+    mutate() {
+      //get random element of the 15 base dna
+      let randomNumber = Math.floor(Math.random() * 15);
+      // test:
+      /*
+      console.log(randomNumber);
+      console.log(dna[randomNumber]);
+      */
+
+      //mutated Speciment
+      let mutatedSpeciment = [];
+
+      // block to get all dna bases but the original from the array
+      // return dna bases for mutation
+      const returnMutatedBase = () => {
+        const bases = ['A', 'T', 'C', 'G']
+        const toMutate = bases.filter(base => base !== dna[randomNumber]);
+        return toMutate[Math.floor(Math.random() * 3)]
+        }
+        //console.log("reggel: ", returnMutatedBase(), randomNumber)
+
+      // random dna 
+      //let mutatedBase = returnRandBase();
+
+      for(let i = 0; i < dna.length; i++) {
+        if(i !== randomNumber) {
+          mutatedSpeciment.push(dna[i])
+          }
+        else {
+          mutatedSpeciment.push(returnMutatedBase());
+          }
+      } //console.log(mutatedSpeciment);
+      return mutatedSpeciment;
+    },
+    compareDNA(pAequor) {
+      let commonElement = 0;
+      let commonBase = [];
+      for(let i = 0; i < dna.length; i++) {
+        if(this.dna[i] === pAequor.dna[i]){
+          commonElement += 1;
+          commonBase.push(this.dna[i]);
+        }
+      } 
+      // test:
+      /* Print the specimen #1 dna and specimen #2 dna + all common base in an array. 
+      console.log(this.dna);
+      console.log(pAequor.dna);
+      console.log(commonBase)
+      */
+      console.log(`Specimen ${this.specimenNum} and specimen ${pAequor.specimenNum} have ${commonElement/15*100}% DNA in common.`)
+    },
+    
+// teljes lezaras    
+  }
+}
+
+
+// TEST:
+
+// Step 3:
+console.log("\nStep 3:")
+const pAequor1 = pAequorFactory(1, mockUpStrand());
+console.log(pAequor1);
+
+// Step 4:
+console.log("\nStep 4:\nafter mutation: ");
+console.log(pAequor1.mutate());
+
+// Step 5:
+console.log("\nStep 5:");
+const pAequor11 = pAequorFactory(11, mockUpStrand());
+const pAequor12 = pAequorFactory(12, mockUpStrand());
+pAequor11.compareDNA(pAequor12);
+
+// Step 6: 
+console.log("\nStep 6:");
+
